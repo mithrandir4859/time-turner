@@ -21,6 +21,11 @@ public class TableRowTransferHandler(val table: JTable) : TransferHandler() {
     private val taskDataFlavor = createDataFlavor(javaClass<Task>())
     private val tableModel = table.getModel() as TaskListTableModel
 
+    private var currentDataFlavor = taskDataFlavor
+    private var canImport = false
+    private var dragRange = IntRange.EMPTY
+    private var dropIndex = -1
+
     override fun createTransferable(c: JComponent): Transferable {
         assert(c == table)
         val dataHandler = DataHandler(table.selectedRowsRange(), intRangeFlavor.getMimeType())
@@ -28,10 +33,21 @@ public class TableRowTransferHandler(val table: JTable) : TransferHandler() {
     }
 
     override fun canImport(info: TransferHandler.TransferSupport): Boolean {
-        val canImport =
-                info.getComponent() == table
-                && info.isDrop()
-                && (info isDataFlavorSupported intRangeFlavor || info isDataFlavorSupported taskDataFlavor)
+        canImport = info.getComponent() == table && info.isDrop()
+        val dropLocation = info.getDropLocation() as JTable.DropLocation
+        dropIndex = dropLocation.getRow()
+        if (info isDataFlavorSupported intRangeFlavor) {
+            currentDataFlavor = intRangeFlavor
+            val transferData = info.getTransferable() getTransferData intRangeFlavor
+            dragRange = transferData as IntRange
+            if (dragRange.isEmpty() || dragRange.contains(dropIndex)) {
+                canImport = false
+            }
+        } else if (info isDataFlavorSupported taskDataFlavor) {
+            currentDataFlavor = taskDataFlavor
+        } else {
+            canImport = false
+        }
         table.setCursor(if (canImport) DragSource.DefaultMoveDrop else DragSource.DefaultMoveNoDrop)
         return canImport
     }
@@ -41,23 +57,30 @@ public class TableRowTransferHandler(val table: JTable) : TransferHandler() {
     }
 
     override fun importData(info: TransferHandler.TransferSupport): Boolean {
-        val target = info.getComponent() as JTable
-        val dropLocation = info.getDropLocation() as JTable.DropLocation
-        val dropIndex = dropLocation.getRow()
-        target.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR))
-        try {
-            val transferData = info.getTransferable() getTransferData intRangeFlavor
-            val dragRange = transferData as IntRange
-            if (dragRange.isEmpty() || dragRange.contains(dropIndex)) {
-                return false
-            }
-            val selectionRange = tableModel.move(dragRange, dropIndex)
-            target.getSelectionModel().addSelectionInterval(selectionRange.start, selectionRange.end)
-            return true
-        } catch (e: Exception) {
-            e.printStackTrace()
+        if (!canImport) {
+            return false
         }
-        return false
+        table setCursor Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR)
+        when (currentDataFlavor) {
+            taskDataFlavor -> importTaskFromTaskCreator(info)
+            intRangeFlavor -> handleTableRowRearrangement()
+            else -> assert(false)
+        }
+        tableModel.fireTableDataChanged()
+        return true
+    }
+
+    fun importTaskFromTaskCreator(info: TransferHandler.TransferSupport) {
+        val transferable = info.getTransferable()
+        val task = transferable getTransferData taskDataFlavor
+        tableModel.tasks.add(dropIndex, task as Task)
+    }
+
+    fun handleTableRowRearrangement() {
+        val selectionRange = tableModel.move(dragRange, dropIndex)
+        table.getSelectionModel().addSelectionInterval(selectionRange.start, selectionRange.end)
+        dragRange = IntRange.EMPTY
+        dropIndex = -1
     }
 
     override fun exportDone(c: JComponent?, t: Transferable?, act: Int) {
