@@ -40,11 +40,7 @@ public class TableRowTransferHandler(val table: JTable) : TransferHandler() {
     override fun importData(info: TransferHandler.TransferSupport): Boolean {
         val target = info.getComponent() as JTable
         val dropLocation = info.getDropLocation() as JTable.DropLocation
-        var dropIndex = dropLocation.getRow()
-        val max = table.getModel().getRowCount()
-        if (dropIndex < 0 || dropIndex > max) {
-            dropIndex = max
-        }
+        val dropIndex = dropLocation.getRow()
         target.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR))
         try {
             val dragRange = info.getTransferable().getTransferData(localObjectFlavor) as IntRange
