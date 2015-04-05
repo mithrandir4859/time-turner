@@ -1,26 +1,29 @@
-package com.artificial.ui
+package com.artificial.ui.dndsupport
 
-import javax.activation.ActivationDataFlavor
-import javax.activation.DataHandler
-import javax.swing.JComponent
+import com.artificial.util.selectedRowsRange
 import javax.swing.JTable
 import javax.swing.TransferHandler
-import java.awt.Cursor
-import java.awt.datatransfer.DataFlavor
+import com.artificial.ui.TaskListTableModel
+import javax.swing.JComponent
 import java.awt.datatransfer.Transferable
+import java.awt.datatransfer.DataFlavor
+import javax.activation.ActivationDataFlavor
+import javax.activation.DataHandler
 import java.awt.dnd.DragSource
-import com.artificial.util.selectedRowsRange
+import java.awt.Cursor
+import com.artificial.model.Task
 
 /**
  * Created by Yurii on 4/5/2015.
  */
 public class TableRowTransferHandler(val table: JTable) : TransferHandler() {
-    private val localObjectFlavor = ActivationDataFlavor(javaClass<IntRange>(), DataFlavor.javaJVMLocalObjectMimeType, "Integer Row Index")
+    private val intRangeFlavor = ActivationDataFlavor(javaClass<IntRange>(), DataFlavor.javaJVMLocalObjectMimeType, "Index Range")
+    private val taskDataFlavor = createDataFlavor(javaClass<Task>())
     private val tableModel = table.getModel() as TaskListTableModel
 
     override fun createTransferable(c: JComponent): Transferable {
         assert(c == table)
-        val dataHandler = DataHandler(table.selectedRowsRange(), localObjectFlavor.getMimeType())
+        val dataHandler = DataHandler(table.selectedRowsRange(), intRangeFlavor.getMimeType())
         return dataHandler
     }
 
@@ -28,7 +31,7 @@ public class TableRowTransferHandler(val table: JTable) : TransferHandler() {
         val canImport =
                 info.getComponent() == table
                 && info.isDrop()
-                && info isDataFlavorSupported localObjectFlavor
+                && (info isDataFlavorSupported intRangeFlavor || info isDataFlavorSupported taskDataFlavor)
         table.setCursor(if (canImport) DragSource.DefaultMoveDrop else DragSource.DefaultMoveNoDrop)
         return canImport
     }
@@ -43,7 +46,8 @@ public class TableRowTransferHandler(val table: JTable) : TransferHandler() {
         val dropIndex = dropLocation.getRow()
         target.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR))
         try {
-            val dragRange = info.getTransferable().getTransferData(localObjectFlavor) as IntRange
+            val transferData = info.getTransferable() getTransferData intRangeFlavor
+            val dragRange = transferData as IntRange
             if (dragRange.isEmpty() || dragRange.contains(dropIndex)) {
                 return false
             }

@@ -25,6 +25,7 @@ import java.awt.GridLayout
 import javax.swing.table.AbstractTableModel
 import javax.swing.JTable
 import javax.swing.ListSelectionModel
+import com.artificial.ui.dndsupport.TableRowTransferHandler
 
 /**
  * Created by Yurii on 4/4/2015.

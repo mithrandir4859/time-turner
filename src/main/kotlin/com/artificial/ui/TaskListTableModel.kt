@@ -9,11 +9,7 @@ import com.artificial.util.shift
 /**
  * Created by Yurii on 4/5/2015.
  */
-public class TaskListTableModel(val tasks: MutableList<Task>) : AbstractTableModel(), Reorderable {
-
-    override fun reorder(fromIndex: Int, toIndex: Int) {
-        tasks.swap(fromIndex, toIndex)
-    }
+public class TaskListTableModel(val tasks: MutableList<Task>) : AbstractTableModel() {
 
     override fun getRowCount() = tasks.size()
 
