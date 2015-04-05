@@ -27,6 +27,9 @@ import javax.swing.JTable
 import javax.swing.ListSelectionModel
 import com.artificial.ui.dndsupport.TableRowTransferHandler
 import org.slf4j.LoggerFactory
+import com.artificial.util.table
+import javax.swing.table.TableColumn
+import javax.swing.table.DefaultTableColumnModel
 
 /**
  * Created by Yurii on 4/4/2015.
@@ -46,7 +49,19 @@ class DayTasksPanel(var day: Day = Day()) : JPanel() {
             }
         }
 
-        val table = JTable(taskListModel)
+        val columnModel = DefaultTableColumnModel()
+        val table = table(taskListModel, columnModel) {
+            setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION)
+            setDragEnabled(true)
+            setDropMode(DropMode.INSERT_ROWS)
+            setTransferHandler(TableRowTransferHandler(this))
+
+            Column.values() forEach {
+                val column = TableColumn(it.ordinal())
+                column setHeaderValue it
+                columnModel addColumn  column
+            }
+        }
 
         taskListModel addTableModelListener {
             try {
@@ -56,10 +71,6 @@ class DayTasksPanel(var day: Day = Day()) : JPanel() {
             }
         }
 
-        table setSelectionMode ListSelectionModel.SINGLE_INTERVAL_SELECTION
-        table setDragEnabled true
-        table setDropMode DropMode.INSERT_ROWS
-        table setTransferHandler TableRowTransferHandler(table)
         setLayout(GridLayout(1, 1))
         add(JScrollPane(table))
         setBorder(BorderFactory.createTitledBorder("Tasks"))

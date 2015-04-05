@@ -10,7 +10,7 @@ import com.artificial.ui.dndsupport.DragGestureImpl
 /**
  * Created by Yurii on 4/4/2015.
  */
-public class DayPanel(var day: Day = Day()) : JPanel(BorderLayout()) {
+public class MainPanel(var day: Day = Day()) : JPanel(BorderLayout()) {
     private val taskCreatorPanel = TaskPanel();
 
     {
@@ -19,7 +19,4 @@ public class DayPanel(var day: Day = Day()) : JPanel(BorderLayout()) {
         add(taskCreatorPanel, BorderLayout.NORTH)
         add(DayTasksPanel(day), BorderLayout.CENTER)
     }
-
-
-
 }

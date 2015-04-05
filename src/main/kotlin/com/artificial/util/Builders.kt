@@ -6,6 +6,7 @@ import java.awt.GridBagConstraints
 import javax.swing.JList
 import javax.swing.table.TableModel
 import javax.swing.JTable
+import javax.swing.table.TableColumnModel
 
 /**
  * Created by Yurii on 4/4/2015.
@@ -21,6 +22,12 @@ fun panel(init: JPanel.() -> Unit): JPanel {
     val p = JPanel()
     p.init()
     return p
+}
+
+public fun table(model: TableModel, columnModel: TableColumnModel, init: JTable.() -> Unit): JTable {
+    val table = JTable(model, columnModel)
+    table.init()
+    return table
 }
 
 fun <T> list(init: JList<T>.() -> Unit): JList<T> {
