@@ -57,5 +57,4 @@ public class TaskPanel(task: Task = Task()) : JPanel(GridBagLayout()) {
             task.description = jtfDescription.getText()
             return task
         }
-
 }

@@ -26,17 +26,19 @@ import javax.swing.table.AbstractTableModel
 import javax.swing.JTable
 import javax.swing.ListSelectionModel
 import com.artificial.ui.dndsupport.TableRowTransferHandler
+import org.slf4j.LoggerFactory
 
 /**
  * Created by Yurii on 4/4/2015.
  */
 class DayTasksPanel(var day: Day = Day()) : JPanel() {
+    val LOGGER = LoggerFactory.getLogger(javaClass)
 
     val taskListModel = TaskListTableModel(day.tasks);
 
     {
         if (day.tasks.isEmpty()) {
-            0..10 forEach {
+            0..1 forEach {
                 val task = Task()
                 task.description = "Some description $it"
                 task.duration = Duration.ofMinutes(it.toLong())
@@ -45,6 +47,14 @@ class DayTasksPanel(var day: Day = Day()) : JPanel() {
         }
 
         val table = JTable(taskListModel)
+
+        taskListModel addTableModelListener {
+            try {
+                day.schedule()
+            } catch (e: Exception){
+                LOGGER.error("", e)
+            }
+        }
 
         table setSelectionMode ListSelectionModel.SINGLE_INTERVAL_SELECTION
         table setDragEnabled true

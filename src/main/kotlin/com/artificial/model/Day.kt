@@ -14,4 +14,12 @@ public class Day : Serializable {
     public var startTime: LocalTime = LocalTime.of (6, 0, 0)
     public var endTime: LocalTime = LocalTime.of(22, 0, 0)
     public var tasks: MutableList<Task> = ArrayList()
+
+    public fun schedule(){
+        var currentTime = startTime
+        tasks forEach {
+            it.startTime = currentTime
+            currentTime = it.endTime!!
+        }
+    }
 }
