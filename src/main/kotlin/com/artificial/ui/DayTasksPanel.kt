@@ -74,5 +74,6 @@ class DayTasksPanel(var day: Day = Day()) : JPanel() {
         setLayout(GridLayout(1, 1))
         add(JScrollPane(table))
         setBorder(BorderFactory.createTitledBorder("Tasks"))
+        day.schedule()
     }
 }
