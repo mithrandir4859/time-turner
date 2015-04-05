@@ -22,13 +22,16 @@ import java.awt.datatransfer.Transferable
 import java.awt.dnd.DnDConstants
 import java.awt.datatransfer.DataFlavor
 import java.awt.GridLayout
+import javax.swing.table.AbstractTableModel
+import javax.swing.JTable
+import javax.swing.ListSelectionModel
 
 /**
  * Created by Yurii on 4/4/2015.
  */
 class DayTasksPanel(var day: Day = Day()) : JPanel() {
-    val taskListModel = DefaultListModel<Task>()
-    val taskList = JList(taskListModel);
+
+    val taskListModel = TaskListTableModel(day.tasks);
 
     {
         if (day.tasks.isEmpty()) {
@@ -40,25 +43,14 @@ class DayTasksPanel(var day: Day = Day()) : JPanel() {
             }
         }
 
-        day.tasks forEach {
-            taskListModel addElement it
-            //            add(TaskPanel(it))
-        }
-        val listCellRenderer = taskList.getCellRenderer()
-        taskList.setCellRenderer(object : ListCellRenderer<Task> {
-            override fun getListCellRendererComponent(list: JList<out Task>, value: Task, index: Int, isSelected: Boolean, cellHasFocus: Boolean): Component? {
-                val taskPanel = TaskPanel(value)
-                val supercomp = listCellRenderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus)
-                taskPanel setBackground  supercomp.getBackground()
-                taskPanel setForeground  supercomp.getForeground()
-                return taskPanel
-            }
-        })
-        taskList setDragEnabled true
-        taskList setDropMode DropMode.INSERT
-        taskList setTransferHandler ListItemTransferHandler()
-        setLayout(GridLayout(1,1))
-        add(JScrollPane(taskList))
+        val table = JTable(taskListModel)
+
+        table setSelectionMode ListSelectionModel.SINGLE_SELECTION
+        table setDragEnabled true
+        table setDropMode DropMode.INSERT_ROWS
+        table setTransferHandler TableRowTransferHandler(table)
+        setLayout(GridLayout(1, 1))
+        add(JScrollPane(table))
         setBorder(BorderFactory.createTitledBorder("Tasks"))
     }
 }

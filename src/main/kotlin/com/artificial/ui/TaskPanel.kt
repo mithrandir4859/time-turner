@@ -8,6 +8,7 @@ import javax.swing.JLabel
 import com.artificial.model.Task
 import java.time.Duration
 import javax.swing.BorderFactory
+import com.artificial
 
 /**
  * Created by Yurii on 4/4/2015.
@@ -17,22 +18,22 @@ public class TaskPanel(task: Task = Task()) : JPanel(GridBagLayout()) {
     private val jtfDescription = JTextField(task.description);
 
     {
-        add(JLabel("Duration: "), gridBagConstraints {
+        add(JLabel("Duration: "), artificial.util.gridBagConstraints {
             gridx = 0
             gridy = 0
         })
 
-        add(jtfDuration, gridBagConstraints {
+        add(jtfDuration, artificial.util.gridBagConstraints {
             gridx = 1
             gridy = 0
         })
 
-        add(JLabel("Description: "), gridBagConstraints {
+        add(JLabel("Description: "), artificial.util.gridBagConstraints {
             gridx = 0
             gridy = 1
         })
 
-        add(jtfDuration, gridBagConstraints {
+        add(jtfDuration, artificial.util.gridBagConstraints {
             gridx = 1
             gridy = 1
         })

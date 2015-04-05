@@ -1,4 +1,4 @@
-package com.artificial.ui
+package com.artificial.util
 
 import javax.swing.JPanel
 import javax.swing.JFrame
@@ -27,7 +27,11 @@ fun <T> list(init: JList<T>.() -> Unit): JList<T> {
     return list
 }
 
-
+fun <T> MutableList<T>.swap(x: Int, y: Int) {
+    val tmp = this[x] // 'this' corresponds to the list
+    this[x] = this[y]
+    this[y] = tmp
+}
 
 fun gridBagConstraints(init : GridBagConstraints.() -> Unit): GridBagConstraints {
     val result = GridBagConstraints()
