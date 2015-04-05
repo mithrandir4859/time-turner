@@ -45,7 +45,7 @@ class DayTasksPanel(var day: Day = Day()) : JPanel() {
 
         val table = JTable(taskListModel)
 
-        table setSelectionMode ListSelectionModel.SINGLE_SELECTION
+        table setSelectionMode ListSelectionModel.SINGLE_INTERVAL_SELECTION
         table setDragEnabled true
         table setDropMode DropMode.INSERT_ROWS
         table setTransferHandler TableRowTransferHandler(table)

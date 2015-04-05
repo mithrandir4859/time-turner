@@ -4,6 +4,8 @@ import javax.swing.JPanel
 import javax.swing.JFrame
 import java.awt.GridBagConstraints
 import javax.swing.JList
+import javax.swing.table.TableModel
+import javax.swing.JTable
 
 /**
  * Created by Yurii on 4/4/2015.
@@ -32,6 +34,21 @@ fun <T> MutableList<T>.swap(x: Int, y: Int) {
     this[x] = this[y]
     this[y] = tmp
 }
+
+public fun IntRange.size(): Int = this.end - this.start
+
+public fun IntRange.shift(shift: Int): IntRange = IntRange(this.start + shift, this.end + shift)
+
+public fun JTable.selectedRowsRange(): IntRange{
+    val selectedRows = getSelectedRows()
+    if (selectedRows.isEmpty()){
+        return IntRange.EMPTY
+    } else {
+        selectedRows.sort()
+        return IntRange(selectedRows.first(), selectedRows.last())
+    }
+}
+
 
 fun gridBagConstraints(init : GridBagConstraints.() -> Unit): GridBagConstraints {
     val result = GridBagConstraints()

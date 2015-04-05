@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Schedule.iml" filepath="$PROJECT_DIR$/Schedule.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Artificial Time Manager.iml" filepath="$PROJECT_DIR$/Artificial Time Manager.iml" />
     </modules>
   </component>
 </project>
