@@ -21,7 +21,7 @@ fun main(args: Array<String>) {
     UIManager.setLookAndFeel("com.bulenkov.darcula.DarculaLaf")
 
     artificial.util.frame("Scheduler") {
-        add(MainPanel())
+        add(DayPanel())
         pack()
         setLocationRelativeTo(null)
         setDefaultCloseOperation(3)

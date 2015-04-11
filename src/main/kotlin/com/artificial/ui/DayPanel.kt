@@ -10,13 +10,13 @@ import com.artificial.ui.dndsupport.DragGestureImpl
 /**
  * Created by Yurii on 4/4/2015.
  */
-public class MainPanel(var day: Day = Day()) : JPanel(BorderLayout()) {
-    private val taskCreatorPanel = TaskPanel();
+public class DayPanel(var day: Day = Day()) : JPanel(BorderLayout()) {
+    private val taskCreatorPanel = TaskEditor()
 
-    {
+    init {
         val dragSource = DragSource()
         dragSource.createDefaultDragGestureRecognizer(taskCreatorPanel, DnDConstants.ACTION_COPY, DragGestureImpl())
         add(taskCreatorPanel, BorderLayout.NORTH)
-        add(DayTasksPanel(day), BorderLayout.CENTER)
+        add(TaskListPanel(day), BorderLayout.CENTER)
     }
 }

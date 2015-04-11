@@ -14,11 +14,11 @@ import com.artificial.util.gridBagConstraints
 /**
  * Created by Yurii on 4/4/2015.
  */
-public class TaskPanel(task: Task = Task()) : JPanel(GridBagLayout()) {
+public class TaskEditor(task: Task = Task()) : JPanel(GridBagLayout()) {
     private val jtfDuration = JTextField(task.duration.toMinutes().toString())
-    private val jtfDescription = JTextField(task.description);
+    private val jtfDescription = JTextField(task.description)
 
-    {
+    init {
         add(JLabel("Duration: "), gridBagConstraints {
             gridx = 0
             gridy = 0

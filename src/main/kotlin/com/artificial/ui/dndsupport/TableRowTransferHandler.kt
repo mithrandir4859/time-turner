@@ -3,7 +3,7 @@ package com.artificial.ui.dndsupport
 import com.artificial.util.selectedRowsRange
 import javax.swing.JTable
 import javax.swing.TransferHandler
-import com.artificial.ui.TaskListTableModel
+import com.artificial.ui.TasksTableModel
 import javax.swing.JComponent
 import java.awt.datatransfer.Transferable
 import java.awt.datatransfer.DataFlavor
@@ -19,7 +19,7 @@ import com.artificial.model.Task
 public class TableRowTransferHandler(val table: JTable) : TransferHandler() {
     private val intRangeFlavor = ActivationDataFlavor(javaClass<IntRange>(), DataFlavor.javaJVMLocalObjectMimeType, "Index Range")
     private val taskDataFlavor = createDataFlavor(javaClass<Task>())
-    private val tableModel = table.getModel() as TaskListTableModel
+    private val tableModel = table.getModel() as TasksTableModel
 
     private var currentDataFlavor = taskDataFlavor
     private var canImport = false
@@ -40,7 +40,7 @@ public class TableRowTransferHandler(val table: JTable) : TransferHandler() {
             currentDataFlavor = intRangeFlavor
             val transferData = info.getTransferable() getTransferData intRangeFlavor
             dragRange = transferData as IntRange
-            if (dragRange.isEmpty() || dragRange.contains(dropIndex)) {
+            if (/*dragRange.isEmpty() || */dropIndex in dragRange) {
                 canImport = false
             }
         } else if (info isDataFlavorSupported taskDataFlavor) {

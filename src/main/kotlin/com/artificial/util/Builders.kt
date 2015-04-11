@@ -3,6 +3,7 @@ package com.artificial.util
 import javax.swing.JPanel
 import javax.swing.JFrame
 import java.awt.GridBagConstraints
+import java.time.Duration
 import javax.swing.JList
 import javax.swing.table.TableModel
 import javax.swing.JTable
@@ -44,6 +45,15 @@ fun <T> MutableList<T>.swap(x: Int, y: Int) {
 
 public fun IntRange.size(): Int = this.end - this.start
 
+public fun Duration.getHoursMinutes(): String {
+    val minutesPerHour = 60
+    val totalMinutes = this.toMinutes()
+    val hours = totalMinutes / minutesPerHour
+    val minutes = totalMinutes % minutesPerHour
+    val minutesStr = if (minutes < 10) "0$minutes" else minutes
+    return "$hours:$minutesStr"
+}
+
 public fun IntRange.shift(shift: Int): IntRange = IntRange(this.start + shift, this.end + shift)
 
 public fun JTable.selectedRowsRange(): IntRange{
@@ -55,7 +65,6 @@ public fun JTable.selectedRowsRange(): IntRange{
         return IntRange(selectedRows.first(), selectedRows.last())
     }
 }
-
 
 fun gridBagConstraints(init : GridBagConstraints.() -> Unit): GridBagConstraints {
     val result = GridBagConstraints()

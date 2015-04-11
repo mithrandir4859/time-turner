@@ -10,7 +10,7 @@ import java.time.Duration
 /**
  * Created by Yurii on 4/5/2015.
  */
-public class TaskListTableModel(val tasks: MutableList<Task>) : AbstractTableModel() {
+public class TasksTableModel(val tasks: MutableList<Task>) : AbstractTableModel() {
     private val columns = Column.values()
 
     override fun getRowCount() = tasks.size()
@@ -23,9 +23,7 @@ public class TaskListTableModel(val tasks: MutableList<Task>) : AbstractTableMod
         return column[row]
     }
 
-    override fun getColumnClass(columnIndex: Int): Class<*> {
-        return columns[columnIndex].clazz
-    }
+    override fun getColumnClass(columnIndex: Int)= columns[columnIndex].clazz
 
     override fun isCellEditable(rowIndex: Int, columnIndex: Int) = columns[columnIndex].isEditable
 
@@ -33,6 +31,7 @@ public class TaskListTableModel(val tasks: MutableList<Task>) : AbstractTableMod
         val column = columns[columnIndex]
         val row = tasks[rowIndex]
         column[row] = aValue
+        fireTableDataChanged()
     }
 
     fun move(rowsRange: IntRange, destinationIndex: Int): IntRange {

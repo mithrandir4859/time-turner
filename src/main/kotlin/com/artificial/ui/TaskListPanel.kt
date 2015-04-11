@@ -10,6 +10,7 @@ import java.awt.datatransfer.DataFlavor
 import java.awt.GridLayout
 import javax.swing.table.AbstractTableModel
 import com.artificial.ui.dndsupport.TableRowTransferHandler
+import com.artificial.util.getHoursMinutes
 import org.slf4j.LoggerFactory
 import com.artificial.util.table
 import org.apache.commons.lang3.StringUtils
@@ -22,12 +23,12 @@ import javax.swing.table.DefaultTableColumnModel
 /**
  * Created by Yurii on 4/4/2015.
  */
-class DayTasksPanel(var day: Day = Day()) : JPanel() {
+class TaskListPanel(var day: Day = Day()) : JPanel() {
     val LOGGER = LoggerFactory.getLogger(javaClass)
 
-    val taskListModel = TaskListTableModel(day.tasks);
+    val taskListModel = TasksTableModel(day.tasks)
 
-    {
+    init {
         if (day.tasks.isEmpty()) {
             0..1 forEach {
                 val task = Task()
@@ -43,17 +44,14 @@ class DayTasksPanel(var day: Day = Day()) : JPanel() {
             setDragEnabled(true)
             setDropMode(DropMode.INSERT_ROWS)
             setTransferHandler(TableRowTransferHandler(this))
+            setRowHeight(24)
 
             setDefaultRenderer(javaClass<Duration>(), object : DefaultTableCellRenderer() {
-                val minutesPerHour = 60
                 override fun getTableCellRendererComponent(table: JTable, value: Any, isSelected: Boolean, hasFocus: Boolean, row: Int, column: Int): Component {
                     val component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column)
                     component as JLabel
                     value as Duration
-                    val totalMinutes = value.toMinutes()
-                    val hours = totalMinutes / minutesPerHour
-                    val minutes = totalMinutes % minutesPerHour
-                    component setText "$hours:$minutes"
+                    component setText value.getHoursMinutes()
                     return component
                 }
             })
@@ -65,23 +63,8 @@ class DayTasksPanel(var day: Day = Day()) : JPanel() {
                 columnModel addColumn  column
             }
 
-            val textField = JTextField()
-            setDefaultEditor(javaClass<Duration>(), object : DefaultCellEditor(textField) {
-                override fun getCellEditorValue(): Duration {
-                    val text = textField.getText()
-                    return when {
-                        StringUtils.isBlank(text) -> Duration.ZERO
-                        StringUtils.isNumeric(text) -> Duration.ofMinutes(text.toLong())
-                        else -> try {
-                            Duration.parse(text)
-                        } catch (e: DateTimeParseException) {
-                            Duration.ZERO
-                        }
-                    }
-                }
-            })
+            setDefaultEditor(javaClass<Duration>(), DurationCellEditor())
         }
-
 
         taskListModel addTableModelListener {
             try {
