@@ -4,7 +4,7 @@ import java.awt.dnd.DragGestureListener
 import java.awt.dnd.DragGestureEvent
 import java.awt.dnd.DnDConstants
 import java.awt.dnd.DragSource
-import com.artificial.ui.TaskEditor
+import com.artificial.ui.task.TaskEditor
 
 /**
  * Created by Yurii on 4/5/2015.

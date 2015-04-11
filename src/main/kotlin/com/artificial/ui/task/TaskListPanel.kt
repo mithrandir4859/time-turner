@@ -1,24 +1,20 @@
-package com.artificial.ui
+package com.artificial.ui.task
 
+import com.artificial
 import com.artificial.model.Day
 import com.artificial.model.Task
-import java.awt.Component
-import java.time.Duration
-import java.awt.datatransfer.Transferable
-import java.awt.dnd.DnDConstants
-import java.awt.datatransfer.DataFlavor
-import java.awt.GridLayout
-import javax.swing.table.AbstractTableModel
 import com.artificial.ui.dndsupport.TableRowTransferHandler
+import com.artificial.ui.task.Column
+import com.artificial.util
 import com.artificial.util.getHoursMinutes
 import org.slf4j.LoggerFactory
-import com.artificial.util.table
-import org.apache.commons.lang3.StringUtils
-import java.time.format.DateTimeParseException
+import java.awt.Component
+import java.awt.GridLayout
+import java.time.Duration
 import javax.swing.*
 import javax.swing.table.DefaultTableCellRenderer
-import javax.swing.table.TableColumn
 import javax.swing.table.DefaultTableColumnModel
+import javax.swing.table.TableColumn
 
 /**
  * Created by Yurii on 4/4/2015.
@@ -39,7 +35,7 @@ class TaskListPanel(var day: Day = Day()) : JPanel() {
         }
 
         val columnModel = DefaultTableColumnModel()
-        val table = table(taskListModel, columnModel) {
+        val table = util.table(taskListModel, columnModel) {
             setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION)
             setDragEnabled(true)
             setDropMode(DropMode.INSERT_ROWS)

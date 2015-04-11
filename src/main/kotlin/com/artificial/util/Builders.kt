@@ -4,6 +4,8 @@ import javax.swing.JPanel
 import javax.swing.JFrame
 import java.awt.GridBagConstraints
 import java.time.Duration
+import java.time.LocalDate
+import java.util.Calendar
 import javax.swing.JList
 import javax.swing.table.TableModel
 import javax.swing.JTable
@@ -31,12 +33,6 @@ public fun table(model: TableModel, columnModel: TableColumnModel, init: JTable.
     return table
 }
 
-fun <T> list(init: JList<T>.() -> Unit): JList<T> {
-    val list = JList<T>()
-    list.init()
-    return list
-}
-
 fun <T> MutableList<T>.swap(x: Int, y: Int) {
     val tmp = this[x] // 'this' corresponds to the list
     this[x] = this[y]
@@ -44,6 +40,13 @@ fun <T> MutableList<T>.swap(x: Int, y: Int) {
 }
 
 public fun IntRange.size(): Int = this.end - this.start
+
+public fun Calendar.toLocalDate(): LocalDate =
+        LocalDate.of(
+                this[Calendar.YEAR],
+                1 + this[Calendar.MONTH],
+                this[Calendar.DAY_OF_MONTH]
+        )
 
 public fun Duration.getHoursMinutes(): String {
     val minutesPerHour = 60

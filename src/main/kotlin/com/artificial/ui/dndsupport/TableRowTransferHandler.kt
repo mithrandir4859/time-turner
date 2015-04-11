@@ -3,7 +3,7 @@ package com.artificial.ui.dndsupport
 import com.artificial.util.selectedRowsRange
 import javax.swing.JTable
 import javax.swing.TransferHandler
-import com.artificial.ui.TasksTableModel
+import com.artificial.ui.task.TasksTableModel
 import javax.swing.JComponent
 import java.awt.datatransfer.Transferable
 import java.awt.datatransfer.DataFlavor

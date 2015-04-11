@@ -1,4 +1,4 @@
-package com.artificial.ui;
+package com.artificial.ui.task;
 
 import com.artificial.util.UtilPackage;
 import org.apache.commons.lang3.StringUtils;

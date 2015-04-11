@@ -1,11 +1,10 @@
-package com.artificial.ui
+package com.artificial.ui.task
 
-import javax.swing.table.AbstractTableModel
 import com.artificial.model.Task
-import com.artificial.util.swap
-import com.artificial.util.size
+import com.artificial.ui.task.Column
 import com.artificial.util.shift
-import java.time.Duration
+import com.artificial.util.size
+import javax.swing.table.AbstractTableModel
 
 /**
  * Created by Yurii on 4/5/2015.

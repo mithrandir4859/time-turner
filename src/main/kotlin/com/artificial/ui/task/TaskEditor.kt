@@ -1,15 +1,14 @@
-package com.artificial.ui
+package com.artificial.ui.task
 
-import javax.swing.JPanel
-import java.awt.GridBagLayout
-import javax.swing.JTextField
-import java.awt.GridBagConstraints
-import javax.swing.JLabel
 import com.artificial.model.Task
+import com.artificial.util.gridBagConstraints
+import java.awt.GridBagConstraints
+import java.awt.GridBagLayout
 import java.time.Duration
 import javax.swing.BorderFactory
-import com.artificial
-import com.artificial.util.gridBagConstraints
+import javax.swing.JLabel
+import javax.swing.JPanel
+import javax.swing.JTextField
 
 /**
  * Created by Yurii on 4/4/2015.

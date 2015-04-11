@@ -1,8 +1,8 @@
-package com.artificial.ui
+package com.artificial.ui.task
 
 import com.artificial.model.Task
-import java.time.LocalTime
 import java.time.Duration
+import java.time.LocalTime
 
 /**
  * Created by Yurii on 4/5/2015.
