@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.support.ClassPathXmlApplicationContext
 import java.awt.BorderLayout
+import java.awt.event.WindowAdapter
+import java.awt.event.WindowEvent
 import java.time.LocalDate
 import java.util.Calendar
 import java.util.GregorianCalendar
@@ -26,6 +28,7 @@ public class MainRunner : Function0<Unit> {
     Autowired val dao = Dao()
 
     override fun invoke() {
+        dao.load()
         Thread.setDefaultUncaughtExceptionHandler(object : Thread.UncaughtExceptionHandler {
             override fun uncaughtException(t: Thread, e: Throwable) {
                 LOGGER.error("$t", e)
@@ -43,6 +46,12 @@ public class MainRunner : Function0<Unit> {
             setLocationRelativeTo(null)
             setDefaultCloseOperation(3)
             setVisible(true)
+            addWindowListener(object: WindowAdapter() {
+                override fun windowClosing(e: WindowEvent) {
+                    dao.save()
+                }
+            })
+
         }
     }
 }
