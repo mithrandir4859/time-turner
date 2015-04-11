@@ -5,6 +5,9 @@
 
     <bean id="dayPanel" class="com.artificial.ui.DayPanel"/>
     <bean id="mainRunner" class="com.artificial.ui.MainRunner"/>
+    <bean id="jtpMainTabs" class="javax.swing.JTabbedPane"/>
+    <bean class="com.artificial.ui.CalendarListener"/>
+    <bean class="com.artificial.repository.Dao"/>
 
     <context:annotation-config/>
 

@@ -28,7 +28,9 @@ fun panel(init: JPanel.() -> Unit): JPanel {
 }
 
 public fun table(model: TableModel, columnModel: TableColumnModel, init: JTable.() -> Unit): JTable {
-    val table = JTable(model, columnModel)
+    val table = object: JTable(model, columnModel){
+        override fun getScrollableTracksViewportHeight() = true
+    }
     table.init()
     return table
 }

@@ -19,7 +19,6 @@ import com.artificial.model.Task
 public class TableRowTransferHandler(val table: JTable) : TransferHandler() {
     private val intRangeFlavor = ActivationDataFlavor(javaClass<IntRange>(), DataFlavor.javaJVMLocalObjectMimeType, "Index Range")
     private val taskDataFlavor = createDataFlavor(javaClass<Task>())
-    private val tableModel = table.getModel() as TasksTableModel
 
     private var currentDataFlavor = taskDataFlavor
     private var canImport = false
@@ -66,18 +65,18 @@ public class TableRowTransferHandler(val table: JTable) : TransferHandler() {
             intRangeFlavor -> handleTableRowRearrangement()
             else -> assert(false)
         }
-        tableModel.fireTableDataChanged()
+        (table.getModel() as TasksTableModel).fireTableDataChanged()
         return true
     }
 
     fun importTaskFromTaskCreator(info: TransferHandler.TransferSupport) {
         val transferable = info.getTransferable()
         val task = transferable getTransferData taskDataFlavor
-        tableModel.tasks.add(dropIndex, task as Task)
+        (table.getModel() as TasksTableModel).tasks.add(dropIndex, task as Task)
     }
 
     fun handleTableRowRearrangement() {
-        val selectionRange = tableModel.move(dragRange, dropIndex)
+        val selectionRange = (table.getModel() as TasksTableModel).move(dragRange, dropIndex)
         table.getSelectionModel().addSelectionInterval(selectionRange.start, selectionRange.end)
         dragRange = IntRange.EMPTY
         dropIndex = -1

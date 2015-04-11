@@ -24,10 +24,10 @@ public enum class Column(
         }
     }
     START_TIME : Column(false, javaClass<LocalTime>()) {
-        override fun get(task: Task) = task.startTime!!
+        override fun get(task: Task) = task.startTime ?: ""
     }
     END_TIME : Column(false, javaClass<LocalTime>()) {
-        override fun get(task: Task) = task.endTime!!
+        override fun get(task: Task) = task.endTime ?: ""
     }
 
     abstract public fun get(task: Task): Any

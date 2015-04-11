@@ -12,13 +12,19 @@ import com.artificial.ui.task.TaskListPanel
 /**
  * Created by Yurii on 4/4/2015.
  */
-public class DayPanel(var day: Day = Day()) : JPanel(BorderLayout()) {
+public class DayPanel(day: Day = Day()) : JPanel(BorderLayout()) {
     private val taskEditor = TaskEditor()
+    private val taskListPanel = TaskListPanel(day)
+
+    var day = day
+        set(day: Day) {
+            taskListPanel.day = day
+        }
 
     init {
         val dragSource = DragSource()
         dragSource.createDefaultDragGestureRecognizer(taskEditor, DnDConstants.ACTION_COPY, DragGestureImpl())
         add(taskEditor, BorderLayout.NORTH)
-        add(TaskListPanel(day), BorderLayout.CENTER)
+        add(taskListPanel, BorderLayout.CENTER)
     }
 }

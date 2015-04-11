@@ -16,7 +16,7 @@ public class TasksTableModel(val tasks: MutableList<Task>) : AbstractTableModel(
 
     override fun getColumnCount() = columns.size()
 
-    override fun getValueAt(rowIndex: Int, columnIndex: Int): Any? {
+    override fun getValueAt(rowIndex: Int, columnIndex: Int): Any {
         val column = columns[columnIndex]
         val row = tasks[rowIndex]
         return column[row]
