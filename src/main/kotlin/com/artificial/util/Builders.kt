@@ -1,5 +1,6 @@
 package com.artificial.util
 
+import org.apache.commons.lang3.text.WordUtils
 import javax.swing.JPanel
 import javax.swing.JFrame
 import java.awt.GridBagConstraints
@@ -19,6 +20,12 @@ fun frame(title : String, init : JFrame.() -> Unit) : JFrame {
     val result = JFrame(title)
     result.init()
     return result
+}
+
+fun new<T>(aClass: Class<T>, init: T.() -> Unit): T {
+    val instance = aClass.newInstance()
+    instance.init()
+    return instance
 }
 
 fun panel(init: JPanel.() -> Unit): JPanel {
@@ -76,3 +83,13 @@ fun gridBagConstraints(init : GridBagConstraints.() -> Unit): GridBagConstraints
     result.init()
     return result
 }
+
+/**
+ * Transforms a string:
+ * "SOME_ENUM_NAME" -> "Some Enum Name"
+ * "PREFERRED_SIZE" -> "Preferred Size"
+ */
+public fun String.toNiceString(): String = WordUtils.capitalize(toLowerCase().replaceAll("_", " "))
+
+public fun <E : Enum<E>> Enum<E>.toNiceString(): String = name().toNiceString()
+

@@ -7,6 +7,7 @@ import com.artificial.ui.dndsupport.TableRowTransferHandler
 import com.artificial.ui.task.Column
 import com.artificial.util
 import com.artificial.util.getHoursMinutes
+import com.artificial.util.toNiceString
 import org.slf4j.LoggerFactory
 import java.awt.Component
 import java.awt.GridLayout
@@ -43,7 +44,7 @@ class TaskListPanel(day: Day = Day()) : JPanel() {
 
         Column.values() forEach {
             val column = TableColumn(it.ordinal())
-            column setHeaderValue it
+            column setHeaderValue it.toNiceString()
             column setCellEditor null
             columnModel addColumn  column
         }
