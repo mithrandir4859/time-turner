@@ -49,6 +49,21 @@ class TaskListPanel(day: Day = Day()) : JPanel() {
         }
 
         setDefaultEditor(javaClass<Duration>(), DurationCellEditor())
+
+        val popup = JPopupMenu()
+        val jmiRemove = JMenuItem("Remove selected")
+        jmiRemove addActionListener {
+            try {
+                val rows = getSelectedRows()
+                val model = getModel()
+                model as TasksTableModel
+                model remove rows
+            } catch (e: Exception){
+                LOGGER.error("", e)
+            }
+        }
+        popup add jmiRemove
+        setComponentPopupMenu(popup)
     }
 
     var day = day
@@ -65,16 +80,6 @@ class TaskListPanel(day: Day = Day()) : JPanel() {
     }
 
     init {
-        if (day.tasks.isEmpty()) {
-            0..1 forEach {
-                val task = Task()
-                task.description = "Some description $it"
-                task.duration = Duration.ofMinutes(it.toLong())
-                day.tasks.add(task)
-            }
-        }
-
-
         setLayout(GridLayout(1, 1))
         add(JScrollPane(table))
         setBorder(BorderFactory.createTitledBorder("Tasks"))

@@ -4,6 +4,9 @@ import com.artificial.model.Task
 import com.artificial.ui.task.Column
 import com.artificial.util.shift
 import com.artificial.util.size
+import java.util.Arrays
+import java.util.Collections
+import java.util.Comparator
 import javax.swing.table.AbstractTableModel
 
 /**
@@ -30,6 +33,16 @@ public class TasksTableModel(val tasks: MutableList<Task>) : AbstractTableModel(
         val column = columns[columnIndex]
         val row = tasks[rowIndex]
         column[row] = aValue
+        fireTableDataChanged()
+    }
+
+    public fun remove(indices: IntArray){
+        val comparator = Comparator.reverseOrder<Int>()
+        val sortedIndices = indices.toArrayList()
+        Collections.sort(sortedIndices, comparator)
+        sortedIndices forEach {
+            tasks remove it
+        }
         fireTableDataChanged()
     }
 
